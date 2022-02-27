@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:io' as io;
+import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -48,10 +49,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-enum DOWNLOAD_TYPE {
-  video,
-  playlist,
-}
+enum DOWNLOAD_TYPE { video, playlist, sound }
 
 class _MyHomePageState extends State<MyHomePage> {
   /*List<String> a = [
@@ -73,7 +71,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (io.Platform.isAndroid || io.Platform.isIOS) {
       _intentData = ReceiveSharingIntent.getTextStream().listen((String value) {
@@ -88,7 +85,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     if (io.Platform.isAndroid || io.Platform.isIOS) {
       _intentData.cancel();
