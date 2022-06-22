@@ -99,6 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
         return false;
       },
       child: Scaffold(
+        backgroundColor: Colors.grey.shade500,
         body: SafeArea(
           child: SingleChildScrollView(
             child: Center(
@@ -354,7 +355,10 @@ class _MyHomePageState extends State<MyHomePage> {
         .replaceAll('\$', ' - ')
         .replaceAll('#', ' - ')
         .replaceAll('.', ' - ')
-        .replaceAll('&', 'and');
+        .replaceAll('&', 'and')
+        .replaceAll('?', ' ')
+        .replaceAll('%', ' - ')
+        .replaceAll('*', ' - ');
     //String? selectedDirectory;
     String fullPath;
 
