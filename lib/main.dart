@@ -345,14 +345,16 @@ class _MyHomePageState extends State<MyHomePage> {
       print(video.title);
     }
     String videoName = video.title
-        .replaceAll('/', "-")
-        .replaceAll('||', "--")
-        .replaceAll('|', "-")
-        .replaceAll('\\', "-")
-        .replaceAll('&&', "--")
-        .replaceAll('&', "-")
-        .replaceAll('\$', '-')
-        .replaceAll('#', '-').replaceAll('.', '-').replaceAll('&', 'and');
+        .replaceAll('/', " - ")
+        .replaceAll('||', " -- ")
+        .replaceAll('|', " - ")
+        .replaceAll('\\', " - ")
+        .replaceAll('&&', " -- ")
+        .replaceAll('&', " - ")
+        .replaceAll('\$', ' - ')
+        .replaceAll('#', ' - ')
+        .replaceAll('.', ' - ')
+        .replaceAll('&', 'and');
     //String? selectedDirectory;
     String fullPath;
 
@@ -450,7 +452,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
     }
-    for(int i = 0; i < videos.length; i++){
+    for (int i = 0; i < videos.length; i++) {
       print(videos[i].url);
     }
     for (int i = 0; i < videos.length; i++) {
