@@ -2,7 +2,6 @@
 
 import 'dart:async';
 import 'dart:io' as io;
-import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -353,7 +352,7 @@ class _MyHomePageState extends State<MyHomePage> {
         .replaceAll('&&', "--")
         .replaceAll('&', "-")
         .replaceAll('\$', '-')
-        .replaceAll('#', '-');
+        .replaceAll('#', '-').replaceAll('.', '-').replaceAll('&', 'and');
     //String? selectedDirectory;
     String fullPath;
 
@@ -450,6 +449,9 @@ class _MyHomePageState extends State<MyHomePage> {
           body: 'Download IS Running',
         ),
       );
+    }
+    for(int i = 0; i < videos.length; i++){
+      print(videos[i].url);
     }
     for (int i = 0; i < videos.length; i++) {
       if (kDebugMode) {
