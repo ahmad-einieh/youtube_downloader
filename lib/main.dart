@@ -358,7 +358,11 @@ class _MyHomePageState extends State<MyHomePage> {
         .replaceAll('&', 'and')
         .replaceAll('?', ' ')
         .replaceAll('%', ' - ')
-        .replaceAll('*', ' - ');
+        .replaceAll('*', ' - ')
+        .replaceAll('!', ' - ')
+        .replaceAll('~', ' - ')
+        .replaceAll('\'', ' - ')
+        .replaceAll("\"", ' - ');
     //String? selectedDirectory;
     String fullPath;
 
