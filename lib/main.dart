@@ -337,9 +337,24 @@ class _MyHomePageState extends State<MyHomePage> {
 
     StreamManifest manifest = await yt.videos.streamsClient.getManifest(vidID);
 
-    StreamInfo streamInfo = manifest.muxed
-        .where((element) => element.qualityLabel == newQuality)
-        .last;
+    StreamInfo streamInfo;
+    try{
+      streamInfo = manifest.muxed
+          .where((element) => element.qualityLabel == newQuality)
+          .last;
+     if (kDebugMode) {
+       print(streamInfo.qualityLabel);
+     }
+    }catch(e){
+      streamInfo = manifest.muxed.last;
+      if (kDebugMode) {
+        print(streamInfo.qualityLabel);
+      }
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+
     Stream<List<int>> stream = yt.videos.streams.get(streamInfo);
     var video = await yt.videos.get(url);
     if (kDebugMode) {
@@ -355,14 +370,14 @@ class _MyHomePageState extends State<MyHomePage> {
         .replaceAll('\$', ' - ')
         .replaceAll('#', ' - ')
         .replaceAll('.', ' - ')
-        .replaceAll('&', 'and')
+        .replaceAll('&', ' and ')
         .replaceAll('?', ' ')
         .replaceAll('%', ' - ')
         .replaceAll('*', ' - ')
         .replaceAll('!', ' - ')
         .replaceAll('~', ' - ')
         .replaceAll('\'', ' - ')
-        .replaceAll("\"", ' - ');
+        .replaceAll("\"", ' - ').replaceAll('+', " plus ");
     //String? selectedDirectory;
     String fullPath;
 
@@ -461,7 +476,9 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     }
     for (int i = 0; i < videos.length; i++) {
-      print(videos[i].url);
+      if (kDebugMode) {
+        print(videos[i].url);
+      }
     }
     for (int i = 0; i < videos.length; i++) {
       if (kDebugMode) {
