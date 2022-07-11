@@ -265,6 +265,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (outlink!.contains("playlist")) {
       Playlist playlist = await yt.playlists.get(outlink);
       List<Video> videos = await yt.playlists.getVideos(playlist.id).toList();
+
       link = videos[0].url;
     } else {
       link = outlink;
@@ -277,6 +278,7 @@ class _MyHomePageState extends State<MyHomePage> {
       vidID = link.substring(link.indexOf("?v=") + 3, link.indexOf("&list="));
     }
     StreamManifest manifest = await yt.videos.streamsClient.getManifest(vidID);
+
     var streamInfo = manifest.muxed.getAllVideoQualitiesLabel();
     setState(() {
       a.clear();
@@ -338,14 +340,14 @@ class _MyHomePageState extends State<MyHomePage> {
     StreamManifest manifest = await yt.videos.streamsClient.getManifest(vidID);
 
     StreamInfo streamInfo;
-    try{
+    try {
       streamInfo = manifest.muxed
           .where((element) => element.qualityLabel == newQuality)
           .last;
-     if (kDebugMode) {
-       print(streamInfo.qualityLabel);
-     }
-    }catch(e){
+      if (kDebugMode) {
+        print(streamInfo.qualityLabel);
+      }
+    } catch (e) {
       streamInfo = manifest.muxed.last;
       if (kDebugMode) {
         print(streamInfo.qualityLabel);
@@ -377,7 +379,8 @@ class _MyHomePageState extends State<MyHomePage> {
         .replaceAll('!', ' - ')
         .replaceAll('~', ' - ')
         .replaceAll('\'', ' - ')
-        .replaceAll("\"", ' - ').replaceAll('+', " plus ");
+        .replaceAll("\"", ' - ')
+        .replaceAll('+', " plus ");
     //String? selectedDirectory;
     String fullPath;
 
