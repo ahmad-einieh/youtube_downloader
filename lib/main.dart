@@ -363,24 +363,21 @@ class _MyHomePageState extends State<MyHomePage> {
       print(video.title);
     }
     String videoName = video.title
-        .replaceAll('/', " - ")
-        .replaceAll('||', " -- ")
-        .replaceAll('|', " - ")
+        .replaceAll('/', "\/")
+        .replaceAll('|', "\|")
         .replaceAll('\\', " - ")
-        .replaceAll('&&', " -- ")
-        .replaceAll('&', " - ")
+        .replaceAll('&', "\&")
         .replaceAll('\$', ' - ')
-        .replaceAll('#', ' - ')
-        .replaceAll('.', ' - ')
-        .replaceAll('&', ' and ')
-        .replaceAll('?', ' ')
-        .replaceAll('%', ' - ')
-        .replaceAll('*', ' - ')
-        .replaceAll('!', ' - ')
-        .replaceAll('~', ' - ')
+        .replaceAll('#', '\#')
+        .replaceAll('.', '\.')
+        .replaceAll('?', '\?')
+        .replaceAll('%', '\%')
+        .replaceAll('*', '\*')
+        .replaceAll('!', '\!')
+        .replaceAll('~', '\~')
         .replaceAll('\'', ' - ')
         .replaceAll("\"", ' - ')
-        .replaceAll('+', " plus ");
+        .replaceAll('+', "\+");
     //String? selectedDirectory;
     String fullPath;
 
