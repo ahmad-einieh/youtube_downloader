@@ -1,8 +1,5 @@
-// notification for video only
-
 import 'dart:async';
 import 'dart:io' as io;
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,15 +10,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:starlight_notification/starlight_notification.dart';
-import 'package:window_size/window_size.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (io.Platform.isWindows || io.Platform.isLinux || io.Platform.isMacOS) {
-    setWindowTitle('ahmad downloader');
-  }
   runApp(const MyApp());
   WidgetsFlutterBinding.ensureInitialized();
   if (io.Platform.isAndroid || io.Platform.isIOS) {
@@ -51,12 +44,6 @@ class MyHomePage extends StatefulWidget {
 enum DOWNLOAD_TYPE { video, playlist, sound }
 
 class _MyHomePageState extends State<MyHomePage> {
-  /*List<String> a = [
-    '720p',
-    '480p',
-    '360p',
-    '144p',
-  ];*/
   List<String> a = [];
   String? value;
   TextEditingController linkC = TextEditingController();
@@ -147,8 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: a.isEmpty
                         ? Container()
                         : DropdownButton(
-                            value: value ??
-                                a.last /*value!.isEmpty || value == null ? a.last : value*/,
+                            value: value ?? a.last,
                             items: a.map((String e) {
                               return DropdownMenuItem<String>(
                                 value: e,
@@ -220,12 +206,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                     linkC.text, value!, await getPath());
                               }
                             }
-
-                            /*linkC.text.isEmpty
-                                ? data!.isNotEmpty
-                                    ? download(data!, value!, "")
-                                    : print("")
-                                : download(linkC.text, value!, "");*/
                           },
                           child: const Text("download"),
                           style: ElevatedButton.styleFrom(
@@ -304,7 +284,6 @@ class _MyHomePageState extends State<MyHomePage> {
     if (io.Platform.isAndroid) {
       var d = await getExternalStorageDirectory();
       selectedDirectory = d!.path;
-      //selectedDirectory = "/storage/emulated/0/ahmadDownloader";
     } else {
       selectedDirectory = await FilePicker.platform.getDirectoryPath();
     }
@@ -381,22 +360,7 @@ class _MyHomePageState extends State<MyHomePage> {
         .replaceAll('\'', ' - ')
         .replaceAll("\"", ' - ')
         .replaceAll('+', " plus ");
-    //String? selectedDirectory;
     String fullPath;
-
-    /*if (io.Platform.isAndroid) {
-      var d = await getExternalStorageDirectory();
-      selectedDirectory = d!.path;
-      fullPath = "$selectedDirectory/$videoName.mp4";
-    } else {
-      selectedDirectory = await FilePicker.platform.getDirectoryPath();
-      fullPath = "$selectedDirectory/$videoName.mp4";
-    }*/
-    /* if (io.Platform.isAndroid) {
-      fullPath = "$externalPath/$videoName.mp4";
-    } else {
-      fullPath = "$externalPath\\$videoName.mp4";
-    }*/
     fullPath = "$externalPath\\$videoName.mp4";
     setState(() {
       isNotDownload = true;
@@ -455,7 +419,6 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text("download done on"),
         description: Text(externalPath),
         width: MediaQuery.of(context).size.width * 0.95,
-        //toastDuration: const Duration(seconds: 5),
       ).show(context);
       if (kDebugMode) {
         print("finish");
@@ -474,7 +437,7 @@ class _MyHomePageState extends State<MyHomePage> {
       await StarlightNotificationService.show(
         StarlightNotification(
           title: 'DOWNLOADING',
-          body: 'Download IS Running',
+          body: 'Download Is Running',
         ),
       );
     }
