@@ -404,7 +404,6 @@ class _MyHomePageState extends State<MyHomePage> {
       data = '';
       a.clear();
     });
-
     if (type == DOWNLOAD_TYPE.video) {
       if (io.Platform.isAndroid || io.Platform.isIOS) {
         await StarlightNotificationService.cancel('DOWNLOADING');
@@ -418,7 +417,9 @@ class _MyHomePageState extends State<MyHomePage> {
       MotionToast.success(
         title: const Text("download done on"),
         description: Text(externalPath),
-        width: MediaQuery.of(context).size.width * 0.95,
+        width: io.Platform.isWindows
+            ? MediaQuery.of(context).size.width * 0.5
+            : MediaQuery.of(context).size.width * 0.9,
       ).show(context);
       if (kDebugMode) {
         print("finish");
@@ -453,6 +454,9 @@ class _MyHomePageState extends State<MyHomePage> {
       await download(
           videos[i].url, quality, externalPath, DOWNLOAD_TYPE.playlist);
     }
+    setState(() {
+      isNotDownloadedPlaylist = false;
+    });
     if (io.Platform.isAndroid || io.Platform.isIOS) {
       await StarlightNotificationService.cancel('DOWNLOADING');
       await StarlightNotificationService.show(
@@ -465,14 +469,13 @@ class _MyHomePageState extends State<MyHomePage> {
     MotionToast.success(
       title: const Text("download done on"),
       description: Text(externalPath),
-      width: MediaQuery.of(context).size.width * 0.95,
+      width: io.Platform.isWindows
+          ? MediaQuery.of(context).size.width * 0.5
+          : MediaQuery.of(context).size.width * 0.9,
       //toastDuration: const Duration(seconds: 5),
     ).show(context);
     if (kDebugMode) {
       print("finish");
     }
-    setState(() {
-      isNotDownloadedPlaylist = false;
-    });
   }
 }
