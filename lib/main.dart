@@ -470,7 +470,7 @@ class _MyHomePageState extends State<MyHomePage> {
       title: const Text("download done on"),
       description: Text(externalPath),
       width: io.Platform.isWindows
-          ? MediaQuery.of(context).size.width * 0.5
+          ? 500
           : MediaQuery.of(context).size.width * 0.9,
       //toastDuration: const Duration(seconds: 5),
     ).show(context);
