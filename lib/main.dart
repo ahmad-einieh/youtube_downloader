@@ -102,11 +102,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   Container(
                     width: 333,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                            width: 1,
-                            color: Colors.green,
-                            style: BorderStyle.solid)),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                          width: 1,
+                          color: Colors.green,
+                          style: BorderStyle.solid),
+                    ),
                     child: TextField(
                       controller: linkC,
                       decoration: const InputDecoration(
@@ -417,9 +418,8 @@ class _MyHomePageState extends State<MyHomePage> {
       MotionToast.success(
         title: const Text("download done on"),
         description: Text(externalPath),
-        width: io.Platform.isWindows
-            ? MediaQuery.of(context).size.width * 0.5
-            : MediaQuery.of(context).size.width * 0.9,
+        height: 75,
+        width: MediaQuery.of(context).size.width * 0.9,
       ).show(context);
       if (kDebugMode) {
         print("finish");
@@ -469,9 +469,8 @@ class _MyHomePageState extends State<MyHomePage> {
     MotionToast.success(
       title: const Text("download done on"),
       description: Text(externalPath),
-      width: io.Platform.isWindows
-          ? 500
-          : MediaQuery.of(context).size.width * 0.9,
+      width:
+          io.Platform.isWindows ? 500 : MediaQuery.of(context).size.width * 0.9,
       //toastDuration: const Duration(seconds: 5),
     ).show(context);
     if (kDebugMode) {
