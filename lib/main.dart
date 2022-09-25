@@ -11,6 +11,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:starlight_notification/starlight_notification.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:youtube_parser/youtube_parser.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -252,12 +253,17 @@ class _MyHomePageState extends State<MyHomePage> {
       link = outlink;
     }
 
-    String vidID;
-    if (!link.contains("&list=")) {
-      vidID = link.substring(link.indexOf("?v=") + 3);
-    } else {
-      vidID = link.substring(link.indexOf("?v=") + 3, link.indexOf("&list="));
+    String? vidID = getIdFromUrl(outlink);
+    if (vidID == null) {
+      MotionToast.error(
+        title: const Text("Error"),
+        description: Text("$outlink not valid"),
+        height: 75,
+        width: MediaQuery.of(context).size.width * 0.9,
+      ).show(context);
+      return;
     }
+
     StreamManifest manifest = await yt.videos.streamsClient.getManifest(vidID);
 
     var streamInfo = manifest.muxed.getAllVideoQualitiesLabel();
@@ -309,16 +315,20 @@ class _MyHomePageState extends State<MyHomePage> {
     if (url.isEmpty) {
       return;
     }
-    String vidID;
-    if (!url.contains("&list=")) {
-      vidID = url.substring(url.indexOf("?v=") + 3);
-    } else {
-      vidID = url.substring(url.indexOf("?v=") + 3, url.indexOf("&list="));
+
+    String? vidID = getIdFromUrl(url);
+    if (vidID == null) {
+      MotionToast.error(
+        title: const Text("Error"),
+        description: Text("$url not valid"),
+        height: 75,
+        width: MediaQuery.of(context).size.width * 0.9,
+      ).show(context);
+      return;
     }
+
     YoutubeExplode yt = YoutubeExplode();
-
     StreamManifest manifest = await yt.videos.streamsClient.getManifest(vidID);
-
     StreamInfo streamInfo;
     try {
       streamInfo = manifest.muxed
