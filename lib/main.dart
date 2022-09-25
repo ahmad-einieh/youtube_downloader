@@ -52,6 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isNotDownload = false;
   bool showNotify = false;
   bool isNotDownloadedPlaylist = false;
+  String fileSize = "";
 
   late StreamSubscription _intentData;
   String? data;
@@ -117,6 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           border: InputBorder.none),
                     ),
                   ),
+                  Container(child: Text(fileSize),),
                   data == null || data!.isEmpty
                       ? Container()
                       : SizedBox(
@@ -267,6 +269,7 @@ class _MyHomePageState extends State<MyHomePage> {
     StreamManifest manifest = await yt.videos.streamsClient.getManifest(vidID);
 
     var streamInfo = manifest.muxed.getAllVideoQualitiesLabel();
+
     setState(() {
       a.clear();
     });
@@ -346,8 +349,14 @@ class _MyHomePageState extends State<MyHomePage> {
         print(e);
       }
     }
+    setState(() {
+      fileSize = streamInfo.size.toString();
+    });
+
+    Future.delayed(const Duration(seconds: 15));
 
     Stream<List<int>> stream = yt.videos.streams.get(streamInfo);
+
     var video = await yt.videos.get(url);
     if (kDebugMode) {
       print(video.title);
@@ -371,8 +380,7 @@ class _MyHomePageState extends State<MyHomePage> {
         .replaceAll('\'', ' - ')
         .replaceAll("\"", ' - ')
         .replaceAll('+', " plus ");
-    String fullPath;
-    fullPath = "$externalPath\\$videoName.mp4";
+    String fullPath = "$externalPath\\$videoName.${streamInfo.codec.subtype}";
     setState(() {
       isNotDownload = true;
       linkC.clear();
@@ -414,6 +422,7 @@ class _MyHomePageState extends State<MyHomePage> {
       x = true;
       data = '';
       a.clear();
+      fileSize = "";
     });
     if (type == DOWNLOAD_TYPE.video) {
       if (io.Platform.isAndroid || io.Platform.isIOS) {
