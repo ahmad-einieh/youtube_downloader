@@ -249,13 +249,12 @@ class _MyHomePageState extends State<MyHomePage> {
     if (outlink!.contains("playlist")) {
       Playlist playlist = await yt.playlists.get(outlink);
       List<Video> videos = await yt.playlists.getVideos(playlist.id).toList();
-
       link = videos[0].url;
     } else {
       link = outlink;
     }
 
-    String? vidID = getIdFromUrl(outlink);
+    String? vidID = getIdFromUrl(link);
     if (vidID == null) {
       MotionToast.error(
         title: const Text("Error"),
