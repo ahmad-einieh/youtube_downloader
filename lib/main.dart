@@ -118,7 +118,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           border: InputBorder.none),
                     ),
                   ),
-                  Container(child: Text(fileSize),),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(fileSize),
+                  ),
                   data == null || data!.isEmpty
                       ? Container()
                       : SizedBox(
@@ -182,7 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                           child: const Text("quality"),
                           style: ElevatedButton.styleFrom(
-                              primary: Colors.green,
+                              backgroundColor: Colors.green,
                               fixedSize: const Size(200, 50),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50))),
@@ -213,7 +216,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                           child: const Text("download"),
                           style: ElevatedButton.styleFrom(
-                              primary: Colors.green,
+                              backgroundColor: Colors.green,
                               fixedSize: const Size(200, 50),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50))),
@@ -489,6 +492,7 @@ class _MyHomePageState extends State<MyHomePage> {
       description: Text(externalPath),
       width:
           io.Platform.isWindows ? 500 : MediaQuery.of(context).size.width * 0.9,
+      height: 35,
       //toastDuration: const Duration(seconds: 5),
     ).show(context);
     if (kDebugMode) {
