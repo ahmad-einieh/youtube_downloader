@@ -492,7 +492,7 @@ class _MyHomePageState extends State<MyHomePage> {
       description: Text(externalPath),
       width:
           io.Platform.isWindows ? 500 : MediaQuery.of(context).size.width * 0.9,
-      height: 35,
+      height: 55,
       //toastDuration: const Duration(seconds: 5),
     ).show(context);
     if (kDebugMode) {
