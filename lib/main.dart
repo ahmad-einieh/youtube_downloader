@@ -381,7 +381,10 @@ class _MyHomePageState extends State<MyHomePage> {
         .replaceAll('~', ' - ')
         .replaceAll('\'', ' - ')
         .replaceAll("\"", ' - ')
-        .replaceAll('+', " plus ");
+        .replaceAll('+', " plus ")
+        .replaceAll(':', ' - ')
+        .replaceAll('\t', ' - ')
+        .replaceAll(' 0    ', ' - ');
     String fullPath = "$externalPath\\$videoName.${streamInfo.codec.subtype}";
     setState(() {
       isNotDownload = true;
