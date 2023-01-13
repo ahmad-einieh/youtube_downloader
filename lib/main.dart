@@ -171,8 +171,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   x
                       ? Column(
-                        children: [
-                          ElevatedButton(
+                          children: [
+                            ElevatedButton(
                               onPressed: () async {
                                 if (linkC.text.isNotEmpty) {
                                   getQuality(linkC.text);
@@ -193,11 +193,24 @@ class _MyHomePageState extends State<MyHomePage> {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(50))),
                             ),
-                          TextButton(onPressed: ()async{
-                            await downloadAudio(linkC.text, await getPath());
-                          }, child:const Text("download it as audio"))
-                        ],
-                      )
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.05,
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                await downloadAudio(
+                                    linkC.text, await getPath());
+                              },
+                              child: const Text(
+                                "download it as audio",
+                                style: TextStyle(
+                                  color: Colors.indigo,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
                       : ElevatedButton(
                           onPressed: () async {
                             if (!linkC.text.contains("playlist")) {
@@ -259,7 +272,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  downloadAudio(String url,String externalPath) async{
+  downloadAudio(String url, String externalPath) async {
     if (io.Platform.isAndroid || io.Platform.isIOS) {
       await Permission.manageExternalStorage.request();
       await Permission.storage.request();
@@ -288,7 +301,7 @@ class _MyHomePageState extends State<MyHomePage> {
       title: const Text("download done on"),
       description: Text(externalPath),
       width:
-      io.Platform.isWindows ? 500 : MediaQuery.of(context).size.width * 0.9,
+          io.Platform.isWindows ? 500 : MediaQuery.of(context).size.width * 0.9,
       height: 55,
       //toastDuration: const Duration(seconds: 5),
     ).show(context);
@@ -360,7 +373,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return selectedDirectory;
   }
 
-  getVideoName(String url)async{
+  getVideoName(String url) async {
     YoutubeExplode yt = YoutubeExplode();
     var video = await yt.videos.get(url);
     if (kDebugMode) {
