@@ -246,6 +246,19 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  downloadAudio(String url,String externalPath) async{
+    String? vidID = getIdFromUrl(url);
+    var yt = YoutubeExplode();
+    StreamManifest manifest = await yt.videos.streamsClient.getManifest(vidID);
+    StreamInfo streamInfo = manifest.audioOnly.first;
+    var stream = yt.videos.streamsClient.get(streamInfo);
+    var file = io.File("test.mp4");
+    var fileStream = file.openWrite();
+    await stream.pipe(fileStream);
+    await fileStream.flush();
+    await fileStream.close();
+  }
+
   getQuality(String? outlink) async {
     String link;
     YoutubeExplode yt = YoutubeExplode();
