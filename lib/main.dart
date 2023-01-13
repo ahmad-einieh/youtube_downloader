@@ -288,6 +288,7 @@ class _MyHomePageState extends State<MyHomePage> {
       x = false;
       value = a.last;
     });
+    yt.close();
   }
 
   getPath() async {
@@ -449,6 +450,7 @@ class _MyHomePageState extends State<MyHomePage> {
         print("finish");
       }
     }
+    yt.close();
   }
 
   downloadPlaylist(String url, String quality, String externalPath) async {
@@ -501,5 +503,6 @@ class _MyHomePageState extends State<MyHomePage> {
     if (kDebugMode) {
       print("finish");
     }
+    yt.close();
   }
 }
