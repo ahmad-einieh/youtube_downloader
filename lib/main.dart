@@ -53,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool showNotify = false;
   bool isNotDownloadedPlaylist = false;
   String fileSize = "";
+  bool isNotDownloadAudio = false;
 
   late StreamSubscription _intentData;
   String? data;
@@ -169,27 +170,34 @@ class _MyHomePageState extends State<MyHomePage> {
                     height: MediaQuery.of(context).size.height * 0.05,
                   ),
                   x
-                      ? ElevatedButton(
-                          onPressed: () async {
-                            if (linkC.text.isNotEmpty) {
-                              getQuality(linkC.text);
-                            } else if (linkC.text.isEmpty &&
-                                data != null &&
-                                data!.isNotEmpty) {
-                              getQuality(data);
-                            } else {
-                              if (kDebugMode) {
-                                print("nothing");
-                              }
-                            }
-                          },
-                          child: const Text("quality"),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              fixedSize: const Size(200, 50),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50))),
-                        )
+                      ? Column(
+                        children: [
+                          ElevatedButton(
+                              onPressed: () async {
+                                if (linkC.text.isNotEmpty) {
+                                  getQuality(linkC.text);
+                                } else if (linkC.text.isEmpty &&
+                                    data != null &&
+                                    data!.isNotEmpty) {
+                                  getQuality(data);
+                                } else {
+                                  if (kDebugMode) {
+                                    print("nothing");
+                                  }
+                                }
+                              },
+                              child: const Text("quality"),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  fixedSize: const Size(200, 50),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50))),
+                            ),
+                          TextButton(onPressed: ()async{
+                            await downloadAudio(linkC.text, await getPath());
+                          }, child:const Text("download it as audio"))
+                        ],
+                      )
                       : ElevatedButton(
                           onPressed: () async {
                             if (!linkC.text.contains("playlist")) {
@@ -237,6 +245,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           color: Colors.green,
                         )
                       : Container(),
+                  isNotDownloadAudio
+                      ? const SpinKitFadingCircle(
+                          color: Colors.green,
+                        )
+                      : Container(),
                 ],
               ),
             ),
@@ -247,16 +260,44 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   downloadAudio(String url,String externalPath) async{
+    if (io.Platform.isAndroid || io.Platform.isIOS) {
+      await Permission.manageExternalStorage.request();
+      await Permission.storage.request();
+      await Permission.accessMediaLocation.request();
+      await Permission.photos.request();
+      await Permission.photosAddOnly.request();
+      await Permission.mediaLibrary.request();
+    }
+    setState(() {
+      isNotDownloadAudio = true;
+    });
     String? vidID = getIdFromUrl(url);
     var yt = YoutubeExplode();
     StreamManifest manifest = await yt.videos.streamsClient.getManifest(vidID);
     StreamInfo streamInfo = manifest.audioOnly.first;
     var stream = yt.videos.streamsClient.get(streamInfo);
-    var file = io.File("test.mp4");
+    var videoName = await getVideoName(url);
+    String fullPath = "$externalPath\\$videoName.mp4";
+    var file = io.File(fullPath);
     var fileStream = file.openWrite();
     await stream.pipe(fileStream);
     await fileStream.flush();
     await fileStream.close();
+    yt.close();
+    MotionToast.success(
+      title: const Text("download done on"),
+      description: Text(externalPath),
+      width:
+      io.Platform.isWindows ? 500 : MediaQuery.of(context).size.width * 0.9,
+      height: 55,
+      //toastDuration: const Duration(seconds: 5),
+    ).show(context);
+    setState(() {
+      isNotDownloadAudio = false;
+    });
+    if (kDebugMode) {
+      print("finish");
+    }
   }
 
   getQuality(String? outlink) async {
@@ -319,6 +360,38 @@ class _MyHomePageState extends State<MyHomePage> {
     return selectedDirectory;
   }
 
+  getVideoName(String url)async{
+    YoutubeExplode yt = YoutubeExplode();
+    var video = await yt.videos.get(url);
+    if (kDebugMode) {
+      print(video.title);
+    }
+    String videoName = video.title
+        .replaceAll('/', " - ")
+        .replaceAll('||', " -- ")
+        .replaceAll('|', " - ")
+        .replaceAll('\\', " - ")
+        .replaceAll('&&', " -- ")
+        .replaceAll('&', " - ")
+        .replaceAll('\$', ' - ')
+        .replaceAll('#', ' - ')
+        .replaceAll('.', ' - ')
+        .replaceAll('&', ' and ')
+        .replaceAll('?', ' ')
+        .replaceAll('%', ' - ')
+        .replaceAll('*', ' - ')
+        .replaceAll('!', ' - ')
+        .replaceAll('~', ' - ')
+        .replaceAll('\'', ' - ')
+        .replaceAll("\"", ' - ')
+        .replaceAll('+', " plus ")
+        .replaceAll(':', ' - ')
+        .replaceAll('\t', ' - ')
+        .replaceAll(' 0    ', ' - ');
+    yt.close();
+    return videoName;
+  }
+
   download(String url, String quality, String externalPath,
       DOWNLOAD_TYPE type) async {
     if (io.Platform.isAndroid || io.Platform.isIOS) {
@@ -373,32 +446,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     Stream<List<int>> stream = yt.videos.streams.get(streamInfo);
 
-    var video = await yt.videos.get(url);
-    if (kDebugMode) {
-      print(video.title);
-    }
-    String videoName = video.title
-        .replaceAll('/', " - ")
-        .replaceAll('||', " -- ")
-        .replaceAll('|', " - ")
-        .replaceAll('\\', " - ")
-        .replaceAll('&&', " -- ")
-        .replaceAll('&', " - ")
-        .replaceAll('\$', ' - ')
-        .replaceAll('#', ' - ')
-        .replaceAll('.', ' - ')
-        .replaceAll('&', ' and ')
-        .replaceAll('?', ' ')
-        .replaceAll('%', ' - ')
-        .replaceAll('*', ' - ')
-        .replaceAll('!', ' - ')
-        .replaceAll('~', ' - ')
-        .replaceAll('\'', ' - ')
-        .replaceAll("\"", ' - ')
-        .replaceAll('+', " plus ")
-        .replaceAll(':', ' - ')
-        .replaceAll('\t', ' - ')
-        .replaceAll(' 0    ', ' - ');
+    var videoName = await getVideoName(url);
     String fullPath = "$externalPath\\$videoName.${streamInfo.codec.subtype}";
     setState(() {
       isNotDownload = true;
