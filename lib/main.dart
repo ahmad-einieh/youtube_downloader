@@ -10,11 +10,30 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:starlight_notification/starlight_notification.dart';
+import 'package:window_manager/window_manager.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:youtube_parser/youtube_parser.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  if(io.Platform.isWindows || io.Platform.isLinux || io.Platform.isMacOS) {
+    await windowManager.ensureInitialized();
+
+    WindowOptions windowOptions = const WindowOptions(
+      size: Size(444, 888),
+      maximumSize: Size(444, 888),
+      minimumSize: Size(444, 888),
+      center: true,
+      backgroundColor: Colors.transparent,
+      skipTaskbar: false,
+      // titleBarStyle: TitleBarStyle.hidden,
+    );
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
 
   runApp(const MyApp());
   WidgetsFlutterBinding.ensureInitialized();
