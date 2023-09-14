@@ -17,7 +17,7 @@ import 'package:youtube_parser/youtube_parser.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if(io.Platform.isWindows || io.Platform.isLinux || io.Platform.isMacOS) {
+  if (io.Platform.isWindows || io.Platform.isLinux || io.Platform.isMacOS) {
     await windowManager.ensureInitialized();
 
     WindowOptions windowOptions = const WindowOptions(
@@ -61,7 +61,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-enum DOWNLOAD_TYPE { video, playlist, sound }
+enum DOWNLOADTYPES { video, playlist, sound }
 
 class _MyHomePageState extends State<MyHomePage> {
   List<String> a = [];
@@ -205,12 +205,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                   }
                                 }
                               },
-                              child: const Text("quality"),
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.green,
                                   fixedSize: const Size(200, 50),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(50))),
+                              child: const Text("quality"),
                             ),
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.05,
@@ -236,11 +236,11 @@ class _MyHomePageState extends State<MyHomePage> {
                               if (linkC.text.isEmpty) {
                                 if (data!.isNotEmpty) {
                                   await download(data!, value!, await getPath(),
-                                      DOWNLOAD_TYPE.video);
+                                      DOWNLOADTYPES.video);
                                 }
                               } else {
                                 await download(linkC.text, value!,
-                                    await getPath(), DOWNLOAD_TYPE.video);
+                                    await getPath(), DOWNLOADTYPES.video);
                               }
                             } else {
                               if (linkC.text.isEmpty) {
@@ -254,12 +254,12 @@ class _MyHomePageState extends State<MyHomePage> {
                               }
                             }
                           },
-                          child: const Text("download"),
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.green,
                               fixedSize: const Size(200, 50),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50))),
+                          child: const Text("download"),
                         ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.05,
@@ -425,7 +425,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   download(String url, String quality, String externalPath,
-      DOWNLOAD_TYPE type) async {
+      DOWNLOADTYPES type) async {
     if (io.Platform.isAndroid || io.Platform.isIOS) {
       await Permission.manageExternalStorage.request();
       await Permission.storage.request();
@@ -484,7 +484,7 @@ class _MyHomePageState extends State<MyHomePage> {
       isNotDownload = true;
       linkC.clear();
     });
-    if (type == DOWNLOAD_TYPE.video) {
+    if (type == DOWNLOADTYPES.video) {
       if (io.Platform.isAndroid || io.Platform.isIOS) {
         await StarlightNotificationService.show(
           StarlightNotification(
@@ -523,7 +523,7 @@ class _MyHomePageState extends State<MyHomePage> {
       a.clear();
       fileSize = "";
     });
-    if (type == DOWNLOAD_TYPE.video) {
+    if (type == DOWNLOADTYPES.video) {
       if (io.Platform.isAndroid || io.Platform.isIOS) {
         await StarlightNotificationService.cancel('DOWNLOADING');
         await StarlightNotificationService.show(
@@ -571,7 +571,7 @@ class _MyHomePageState extends State<MyHomePage> {
         print(videos[i].url);
       }
       await download(
-          videos[i].url, quality, externalPath, DOWNLOAD_TYPE.playlist);
+          videos[i].url, quality, externalPath, DOWNLOADTYPES.playlist);
     }
     setState(() {
       isNotDownloadedPlaylist = false;
