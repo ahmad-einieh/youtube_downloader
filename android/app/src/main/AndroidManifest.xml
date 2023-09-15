@@ -14,7 +14,10 @@
     <application
            android:requestLegacyExternalStorage="true"
         android:label="ahmad downloader"
-        android:icon="@mipmap/launcher_icon" >
+        android:icon="@mipmap/launcher_icon" 
+        android:requestLegacyExternalStorage="true"
+        >
+        
           <!-- android:name="io.flutter.app.FlutterApplication" -->
 
         <activity
