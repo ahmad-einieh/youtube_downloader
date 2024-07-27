@@ -77,19 +77,19 @@ class _MyHomePageState extends State<MyHomePage> {
   late StreamSubscription _intentData;
   String? data;
 
-  @override
-  void initState() {
-    super.initState();
-    if (io.Platform.isAndroid || io.Platform.isIOS) {
-      _intentData = ReceiveSharingIntent.getTextStream().listen((String value) {
-        setState(() {
-          data = value;
-        });
-      });
-      ReceiveSharingIntent.getInitialText()
-          .then((String? value) => data = value);
-    }
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   if (io.Platform.isAndroid || io.Platform.isIOS) {
+  //     _intentData = ReceiveSharingIntent.getTextStream().listen((String value) {
+  //       setState(() {
+  //         data = value;
+  //       });
+  //     });
+  //     ReceiveSharingIntent.getInitialText()
+  //         .then((String? value) => data = value);
+  //   }
+  // }
 
   @override
   void dispose() {
