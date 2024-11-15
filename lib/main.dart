@@ -8,7 +8,7 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+// import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:starlight_notification/starlight_notification.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -355,7 +355,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     StreamManifest manifest = await yt.videos.streamsClient.getManifest(vidID);
-
     var streamInfo = manifest.muxed.getAllVideoQualitiesLabel();
 
     setState(() {
